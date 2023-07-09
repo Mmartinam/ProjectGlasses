@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CristalView</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<nav class="navbar bg-body-tertiary">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+
+            Cristal<span style="color:orange">View</span>
+        </a>
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for glasses in index %}
+            <div class="col">
+                <div class="card h-100">
+                    <a href="#">
+                        <img src="{{ MEDIA_URL }}{{ glasses.photo.url }}" class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body text-center">
+                        <p class="card-text" name="name" style="font-weight: bold">{{ glasses.name }}</p>
+                        <p class="card-text" name="colorFrame">{{ glasses.colorFrame }}</p>
+                        <h5 class="card-title" style="color: #fd8000">{{ glasses.price }} $</h5>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="container d-flex justify-content-center" style="margin-top: 80px">
+    <form method="POST" action="{% url 'log_in' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="inputEmail1" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username">
+            <div id="help" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label for="inputPassword4" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password">
+        </div>
+        {% if messages %}
+            <ul class="messages" style="list-style-type: none; color: red; margin-left: -20px">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
+</body>
+</html>
